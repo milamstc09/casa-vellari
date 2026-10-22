@@ -6,3 +6,136 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ---------- Enums ----------
+
+enum Role {
+  CLIENTE
+  FUNCIONARIO
+}
+
+enum StatusReserva {
+  CONFIRMADA
+  CANCELADA
+}
+
+enum Categoria {
+  ENTRADAS
+  MASSAS_LONGAS
+  MASSAS_RECHEADAS
+  CARNES
+  SOBREMESAS
+  BEBIDAS
+}
+
+// ---------- Usuário e autenticação (Better Auth) ----------
+
+model User {
+  id            String   @id
+  name          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  role          Role     @default(CLIENTE)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+  reservas Reserva[]
+  pratos   Prato[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// ---------- Entidades do restaurante ----------
+
+model Mesa {
+  id         String   @id @default(cuid())
+  numero     Int      @unique
+  capacidade Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  reservas Reserva[]
+}
+
+model Reserva {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  mesaId      String
+  mesa        Mesa          @relation(fields: [mesaId], references: [id], onDelete: Restrict)
+  inicio      DateTime
+  fim         DateTime
+  pessoas     Int
+  status      StatusReserva @default(CONFIRMADA)
+  canceladaEm DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([mesaId, inicio])
+  @@index([userId])
+}
+
+model Prato {
+  id          String    @id @default(cuid())
+  nome        String
+  descricao   String
+  preco       Decimal   @db.Decimal(10, 2)
+  categoria   Categoria
+  imagemUrl   String?
+  criadoPorId String
+  criadoPor   User      @relation(fields: [criadoPorId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([categoria])
+}

@@ -17,6 +17,9 @@ export default async function Navbar() {
         <nav className="flex items-center gap-4 text-sm">
           {session ? (
             <>
+                            {session.user.role === "FUNCIONARIO" && (
+                  <Link href="/admin" className="hover:underline">Admin</Link>
+                )}
               <span className="max-w-[10rem] truncate">Olá, {session.user.name}</span>
               <form action={sair}>
                 <button type="submit" className="rounded border border-papel/60 px-3 py-1 hover:bg-verde2">

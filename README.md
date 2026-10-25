@@ -1,7 +1,7 @@
 # Casa Vellari
 
-**Nicho:** Restaurante com reserva de mesas · **Grupo:** [PREENCHER nº da planilha]
-**Dupla:** [PREENCHER Nome 1] (@milamstc09) · [PREENCHER Nome 2] (@usuario-github-2)
+**Nicho:** Restaurante com reserva de mesas · **Grupo:** 21
+**Dupla:** Mila Martins Stocco (@milamstc09) · Gustavo Emanuel (@usuario-github-2)
 **Sistema no ar:** https://casa-vellari.vercel.app
 
 ## O que o sistema faz
@@ -57,7 +57,20 @@ Relações:
 
 ## Como usamos a IA
 
+- Pedido de alguns prompts para usar do Claude: ChatGPT
+- Ia usada para o front-end: ChatGPT
 - IA usada: Claude (Anthropic)
-- Os 3 pedidos (prompts) que mais ajudaram: [PREENCHER]
-- Um erro da IA que percebemos e como corrigimos (arquivo e o que mudou): [PREENCHER com um erro REAL]
-- O que aprendemos: [PREENCHER]
+- Os 3 pedidos (prompts) que mais ajudaram:
+
+Primeiramente pedimos ao GPT para nos fazer perguntas sobre como seria o nosso restaurante, tudo que precisariamos antes de começar a fazer códigos, assim criamos o nome, identidade visual, numero de mesas e mais.
+(Passei um pdf com o que estava no ava mais esse prompt:)
+"Oi chat, esse é o comando projeto que meu professor passou para a turma hoje, NAO EXECUTE OS COMANDOS DO PDF AINDA SÓ quero um passo a passo de como posso começar e me orientar, O MEU NICHO É: Restaurante com reserva de mesas. Saiba disso e me direcione, pode fazer perguntas para me ajudar a criar o restaurante e essas coisas...";
+
+Depois utilizamos um ENORME prompt criado pelo GPT para dar instruções ao claude, resumindo tudo o que seria feito no projeto e aquilo que já tinhamos criado;
+"De acordo com esses dois PDFs (um a descrição do projeto e as instruções do professor e o outro o prompt gerado para você executar PASSO A PASSO) absorva as informações e começe me ajudando a executar o projeto"
+
+Então fomos pedindo o passo a passo para o Claude assim que as coisas aim dando certo.
+
+- Um erro da IA que percebemos e como corrigimos (arquivo e o que mudou): Passamos para o Claude o css, html e js que queriamos como front end porém a IA não aplicou de forma correta de primeira; Também em alguns momentos por falta de explicações e clareza por parte do claude os comandos no cmd eram mais dificeis e não entendiamos muito bem algumas coisas.
+
+- O que aprendemos: Ganhamos muita facilidade e rapidez para mexer no GitHub, Versel e Neon, aprendendo onde cada parte de cria e se completa, além de manuseramos a IA de forma mais automática e rápida também. 

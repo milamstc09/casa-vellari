@@ -1,8 +1,11 @@
 # Casa Vellari
 
 **Nicho:** Restaurante com reserva de mesas · **Grupo:** 21
-**Dupla:** Mila Martins Stocco (@milamstc09) · Gustavo Emanuel (@usuario-github-2)
+**Dupla:** Mila Martins Stocco (@milamstc09) · Gustavo Emanuel (@gekado-sab)
 **Sistema no ar:** https://casa-vellari.vercel.app
+
+## INFORMAÇÃO IMPORTANTE
+Sabemos que é obrigatório que cada integrante precisa de pelo menos 3 commits de código, em pelo menos 3 dias diferentes. Porém o Gustavo Emanuel não possui um computador em casa, tanto em Minas Gerais como em RIVE, na ultima semana ocorreu a gincana solidária e o projeto da SNCT logo não foi possivel ir a aula para utilizar o computador. Logo informo que todos os commit e alterações foram feitos por mim (Mila) com a ajuda do Gustavo nas duas primeiras aulas que tivemos para fazer o trabalho em sala e posteriormente no meu computador em casa, com o Gustavo também focando na parte da construção visual e estética do restaurante mais o front-end na sala de aula. 
 
 ## O que o sistema faz
 

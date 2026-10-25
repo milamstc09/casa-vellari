@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Casa Vellari
 
-## Getting Started
+**Nicho:** Restaurante com reserva de mesas · **Grupo:** [PREENCHER nº da planilha]
+**Dupla:** [PREENCHER Nome 1] (@milamstc09) · [PREENCHER Nome 2] (@usuario-github-2)
+**Sistema no ar:** https://casa-vellari.vercel.app
 
-First, run the development server:
+## O que o sistema faz
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Casa Vellari é um restaurante italiano fictício em Ipanema (Rio de Janeiro). O site tem página inicial
+com a história do restaurante, cardápio público com busca, cadastro e login de clientes, reserva de mesas
+e uma área administrativa para funcionários.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Cliente: cadastra-se, faz login, reserva uma mesa (data, horário de 18h a 22h e número de pessoas),
+  vê a própria reserva futura e pode cancelá-la até 10 horas antes.
+- Funcionário: gerencia mesas (CRUD), pratos do cardápio (CRUD com foto) e reservas.
+- Cada reserva dura 2 horas. O sistema impede duas reservas na mesma mesa em horários que se sobrepõem
+  e só oferece mesas com lugares suficientes.
+- Cada cliente pode ter somente uma reserva futura por vez.
+- Todos os dados do site são fictícios.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Páginas para testar
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Pública: `/`
+- Cardápio: `/cardapio`
+- Busca que encontra: `/cardapio?busca=lasanha` (troque por um prato que exista, ex.: `/cardapio?busca=burrata`)
+- Busca sem resultado: `/cardapio?busca=xyzabc`
+- Versão do deploy: `/api/versao`
+- Protegida (pede login): `/admin` (funcionário) · `/minha-conta` e `/reservar` (cliente logado)
 
-## Learn More
+## Banco de dados
 
-To learn more about Next.js, take a look at the following resources:
+PostgreSQL (Neon) acessado pelo Prisma 7. As migrations ficam em `prisma/migrations`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Tabela | Principais campos |
+|---|---|
+| `user` | id, name, email, role (`CLIENTE` ou `FUNCIONARIO`) |
+| `session`, `account`, `verification` | tabelas do Better Auth (a senha fica em `account`, com hash) |
+| `Mesa` | id, numero (único), capacidade |
+| `Reserva` | id, userId, mesaId, inicio, fim, pessoas, status (`CONFIRMADA`/`CANCELADA`), canceladaEm |
+| `Prato` | id, nome, descricao, preco, categoria, imagemUrl (Vercel Blob), criadoPorId |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Relações:
 
-## Deploy on Vercel
+- **Mesa 1 ─── N Reserva** (uma mesa tem várias reservas em datas e horários diferentes).
+  Uma mesa com reservas não pode ser excluída.
+- User 1 ─── N Reserva
+- User 1 ─── N Prato (autoria)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Como rodar no computador
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. `git clone https://github.com/milamstc09/casa-vellari.git` e `cd casa-vellari`
+2. `npm install`
+3. Copie `.env.example` para `.env` e preencha (use um branch **dev** do Neon, nunca o de produção).
+4. `npx prisma migrate dev` (cria as tabelas) e depois `npx prisma generate`
+5. `npx prisma db seed` (20 mesas, conta de funcionário e 27 pratos)
+6. `npm run dev` e abra http://localhost:3000
+
+## Como usamos a IA
+
+- IA usada: Claude (Anthropic)
+- Os 3 pedidos (prompts) que mais ajudaram: [PREENCHER]
+- Um erro da IA que percebemos e como corrigimos (arquivo e o que mudou): [PREENCHER com um erro REAL]
+- O que aprendemos: [PREENCHER]

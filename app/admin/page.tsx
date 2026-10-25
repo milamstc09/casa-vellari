@@ -1,20 +1,40 @@
+import { prisma } from "@/lib/prisma";
 import { exigirFuncionario } from "@/lib/permissoes";
-import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
   const session = await exigirFuncionario();
 
+  const [mesas, pratos, futuras] = await Promise.all([
+    prisma.mesa.count(),
+    prisma.prato.count(),
+    prisma.reserva.count({ where: { status: "CONFIRMADA", inicio: { gt: new Date() } } }),
+  ]);
+
   return (
-    <main className="mx-auto max-w-4xl px-4 py-12">
-      <p className="text-xs tracking-[0.25em] text-vermelho">ÁREA INTERNA</p>
-      <h1 className="text-3xl text-verde">Painel administrativo</h1>
-      <p className="mt-4 text-sm">Conectado como {session.user.email}</p>
-            <Link
-        href="/admin/mesas"
-        className="mt-6 inline-block rounded-md bg-verde px-4 py-2 font-semibold text-papel hover:bg-verde2"
-      >
-        Gerenciar mesas
-      </Link>
+    <main className="mx-auto max-w-4xl px-4 py-8">
+      <p className="eyebrow">ÁREA INTERNA</p>
+      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, color: "#123b2b" }}>
+        Painel administrativo
+      </h2>
+      <p className="muted" style={{ marginBottom: 20 }}>
+        Conectado como {session.user.email}
+      </p>
+      <div className="stats-grid" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
+        <div className="stat-card">
+          <span>Mesas</span>
+          <strong>{mesas}</strong>
+        </div>
+        <div className="stat-card">
+          <span>Pratos no cardápio</span>
+          <strong>{pratos}</strong>
+        </div>
+        <div className="stat-card">
+          <span>Reservas futuras</span>
+          <strong>{futuras}</strong>
+        </div>
+      </div>
     </main>
   );
 }

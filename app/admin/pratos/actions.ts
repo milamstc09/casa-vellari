@@ -47,8 +47,10 @@ export async function criarPrato(
   if (temArquivo(arquivo)) {
     try {
       imagemUrl = await enviarImagem(arquivo);
-    } catch {
-      return { erro: "Não foi possível enviar a imagem. Tente novamente.", valores };
+        } catch (e) {
+      const motivo = e instanceof Error ? e.message : String(e);
+      console.error("Falha no upload do Blob:", motivo);
+      return { erro: `Falha no envio da imagem: ${motivo}`, valores };
     }
   }
 
@@ -56,9 +58,11 @@ export async function criarPrato(
     await prisma.prato.create({
       data: { ...resultado.data, imagemUrl, criadoPorId: session.user.id },
     });
-  } catch {
-    return { erro: "Não foi possível salvar o prato. Tente novamente.", valores };
-  }
+        } catch (e) {
+      const motivo = e instanceof Error ? e.message : String(e);
+      console.error("Falha no upload do Blob:", motivo);
+      return { erro: `Falha no envio da imagem: ${motivo}`, valores };
+    }
 
   atualizarPaginas();
   redirect("/admin/pratos?ok=" + encodeURIComponent("Prato criado com sucesso."));
@@ -89,16 +93,20 @@ export async function editarPrato(
   if (temArquivo(arquivo)) {
     try {
       imagemUrl = await enviarImagem(arquivo);
-    } catch {
-      return { erro: "Não foi possível enviar a imagem. Tente novamente.", valores };
+        } catch (e) {
+      const motivo = e instanceof Error ? e.message : String(e);
+      console.error("Falha no upload do Blob:", motivo);
+      return { erro: `Falha no envio da imagem: ${motivo}`, valores };
     }
   }
 
   try {
     await prisma.prato.update({ where: { id }, data: { ...resultado.data, imagemUrl } });
-  } catch {
-    return { erro: "Não foi possível salvar o prato. Tente novamente.", valores };
-  }
+         } catch (e) {
+      const motivo = e instanceof Error ? e.message : String(e);
+      console.error("Falha no upload do Blob:", motivo);
+      return { erro: `Falha no envio da imagem: ${motivo}`, valores };
+    }
 
   if (imagemUrl !== atual.imagemUrl) await apagarImagem(atual.imagemUrl);
 

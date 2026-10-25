@@ -1,4 +1,5 @@
 import { exigirFuncionario } from "@/lib/permissoes";
+import Link from "next/link";
 
 export default async function AdminPage() {
   const session = await exigirFuncionario();
@@ -8,6 +9,12 @@ export default async function AdminPage() {
       <p className="text-xs tracking-[0.25em] text-vermelho">ÁREA INTERNA</p>
       <h1 className="text-3xl text-verde">Painel administrativo</h1>
       <p className="mt-4 text-sm">Conectado como {session.user.email}</p>
+            <Link
+        href="/admin/mesas"
+        className="mt-6 inline-block rounded-md bg-verde px-4 py-2 font-semibold text-papel hover:bg-verde2"
+      >
+        Gerenciar mesas
+      </Link>
     </main>
   );
 }
